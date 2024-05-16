@@ -61,12 +61,13 @@ const PinInput: React.FC<IProps> = ({ error, count, handleChange }) => {
     }
     const tempValue = [...value];
     if (inputRefs?.current?.[index].value.length >= 2) {
-      let val = inputRefs.current[index]?.value;
       console.log("hahha");
-      tempValue[index] = inputRefs.current?.[index]?.value.split("").pop();
+      tempValue[index] = inputRefs.current?.[index]?.value
+        .split("")
+        .pop() as string;
       inputRefs.current[index].value = inputRefs.current?.[index]?.value
         ?.split("")
-        .pop();
+        .pop() as string;
       setValue([...tempValue]);
       focusInput(index + 1);
     } else {
@@ -85,16 +86,15 @@ const PinInput: React.FC<IProps> = ({ error, count, handleChange }) => {
   };
 
   //handle on last input field
-  const handleLast = (
-    index: number,
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleLast = (index: number) => {
     const tempValue = [...value];
     if (inputRefs.current[index]?.value.length >= 2) {
-      tempValue[index] = inputRefs.current?.[index]?.value.split("").pop();
+      tempValue[index] = inputRefs.current?.[index]?.value
+        .split("")
+        .pop() as string;
       inputRefs.current[index].value = inputRefs.current?.[index]?.value
         ?.split("")
-        .pop();
+        .pop() as string;
       setValue([...tempValue]);
     } else {
       tempValue[index] = inputRefs.current?.[index]?.value;
@@ -128,8 +128,8 @@ const PinInput: React.FC<IProps> = ({ error, count, handleChange }) => {
                 sx={{ width: "fit-content" }}
                 type="text"
                 error={error}
-                onChange={(e) => {
-                  index == count - 1 ? handleLast(index, e) : undefined;
+                onChange={() => {
+                  index == count - 1 ? handleLast(index) : undefined;
                 }}
                 inputRef={(el) => (inputRefs.current[index] = el)}
                 onPaste={(e) => {
