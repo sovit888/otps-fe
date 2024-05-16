@@ -4,8 +4,10 @@ import { useFormik } from "formik";
 import { otpSchema } from "../../schema/opt.schema";
 import axiosInstance from "../../axios";
 import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       code: "",
@@ -19,6 +21,9 @@ const HomePage = () => {
         toast.success("Successfully verified", {
           autoClose: 1200,
         });
+        setTimeout(() => {
+          navigate("/success");
+        }, 1200);
       } catch (error) {
         toast.error("Error", {
           autoClose: 1200,
