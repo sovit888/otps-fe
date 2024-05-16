@@ -30,16 +30,25 @@ const PinInput: React.FC<IProps> = ({ error, count, handleChange }) => {
     const data = e.clipboardData.getData("text");
 
     const strArray: string[] = data.split("").filter((v) => /\d/.test(v));
-    console.log(strArray.length, index + count, "haha");
-    if (index + count > strArray.length) {
-      strArray.forEach((v, ind) => {
-        if (inputRefs?.current?.[ind]) {
-          inputRefs.current[ind + index]!.value = v;
-        }
-      });
-    } else {
-      focusInput(index + count);
+    const temp = [...value];
+    for (let i = 0; i < strArray.length; i++) {
+      if (i + index >= count) {
+        break;
+      }
+      temp[i + index] = strArray[i];
+      inputRefs.current[i + index]!.value = strArray[i];
     }
+    setValue([...temp]);
+    handleBur();
+    // if (index + count > strArray.length) {
+    //   strArray.forEach((v, ind) => {
+    //     if (inputRefs?.current?.[ind]) {
+    //       inputRefs.current[ind + index]!.value = v;
+    //     }
+    //   });
+    // } else {
+    //   focusInput(index + count);
+    // }
   };
 
   //blur the fields
@@ -50,9 +59,7 @@ const PinInput: React.FC<IProps> = ({ error, count, handleChange }) => {
   };
   //focus on next input on complete
   const focusNextInput = (index: number) => {
-    console.log("called next input haha");
     if (!inputRefs.current[index]?.value) return;
-    if (inputRefs.current[index].value) console.log("called next input haha1");
     if (!inputRefs?.current?.[index]?.value) return;
     if (inputRefs?.current?.[index]?.value == null) return;
     if (!isValidNumber(inputRefs?.current?.[index]?.value)) {
@@ -133,7 +140,7 @@ const PinInput: React.FC<IProps> = ({ error, count, handleChange }) => {
                 }}
                 inputRef={(el) => (inputRefs.current[index] = el)}
                 onPaste={(e) => {
-                  e.preventDefault();
+                  // e.preventDefault();
                   handlePaste(e, index);
                 }}
                 onKeyUp={
